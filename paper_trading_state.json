@@ -1,0 +1,17 @@
+{
+  "capital": 100.0,
+  "starting_capital": 100.0,
+  "positions": {},
+  "stats": {
+    "total_trades": 0,
+    "winning_trades": 0,
+    "losing_trades": 0,
+    "realized_profit": 0.0,
+    "realized_loss": 0.0,
+    "max_drawdown": 0.0,
+    "peak_capital": 100.0,
+    "started_at_secs": 1767101369
+  },
+  "daily_pnl": 0.0,
+  "trading_date": "2025-12-30"
+}

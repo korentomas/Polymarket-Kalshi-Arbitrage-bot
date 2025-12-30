@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 //! Position tracking and P&L calculation system.
 //!
 //! This module tracks all positions across both platforms, calculates cost basis,

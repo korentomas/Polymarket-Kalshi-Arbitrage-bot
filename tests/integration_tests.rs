@@ -18,7 +18,7 @@
 // ============================================================================
 
 mod position_tracker_tests {
-    use arb_bot::position_tracker::*;
+    use prediction_market_arbitrage::position_tracker::*;
     
     /// Test: Recording fills updates position correctly
     #[test]
@@ -138,7 +138,7 @@ mod position_tracker_tests {
 // ============================================================================
 
 mod circuit_breaker_tests {
-    use arb_bot::circuit_breaker::*;
+    use prediction_market_arbitrage::circuit_breaker::*;
     
     fn test_config() -> CircuitBreakerConfig {
         CircuitBreakerConfig {
@@ -289,8 +289,8 @@ mod circuit_breaker_tests {
 // ============================================================================
 
 mod e2e_tests {
-    use arb_bot::position_tracker::*;
-    use arb_bot::circuit_breaker::*;
+    use prediction_market_arbitrage::position_tracker::*;
+    use prediction_market_arbitrage::circuit_breaker::*;
 
     // Note: test_full_arb_lifecycle was removed because it used the deleted
     // make_market_state helper and MarketArbState::check_arbs method.
@@ -381,7 +381,7 @@ mod e2e_tests {
 // ============================================================================
 
 mod fill_accuracy_tests {
-    use arb_bot::position_tracker::*;
+    use prediction_market_arbitrage::position_tracker::*;
     
     /// Test: Actual fill price different from expected
     #[test]
@@ -453,7 +453,7 @@ mod fill_accuracy_tests {
 // ============================================================================
 
 mod infra_integration_tests {
-    use arb_bot::types::*;
+    use prediction_market_arbitrage::types::*;
 
     /// Helper to create market state with prices
     fn setup_market(
@@ -782,9 +782,9 @@ mod infra_integration_tests {
 // ============================================================================
 
 mod execution_tests {
-    use arb_bot::types::*;
-    use arb_bot::circuit_breaker::*;
-    use arb_bot::position_tracker::*;
+    use prediction_market_arbitrage::types::*;
+    use prediction_market_arbitrage::circuit_breaker::*;
+    use prediction_market_arbitrage::position_tracker::*;
 
     /// Test: ExecutionEngine correctly filters low-profit opportunities
     #[tokio::test]
@@ -862,7 +862,7 @@ mod execution_tests {
     /// Test: NanoClock provides monotonic timing
     #[test]
     fn test_nano_clock_monotonic() {
-        use arb_bot::execution::NanoClock;
+        use prediction_market_arbitrage::execution::NanoClock;
 
         let clock = NanoClock::new();
 
@@ -882,7 +882,7 @@ mod execution_tests {
 // the system correctly handles the unmatched exposure.
 
 mod mismatched_fill_tests {
-    use arb_bot::position_tracker::*;
+    use prediction_market_arbitrage::position_tracker::*;
 
     /// Test: When Poly fills more than Kalshi, we have excess Poly exposure
     /// that needs to be sold to close the position.
@@ -1231,9 +1231,9 @@ mod mismatched_fill_tests {
 // 4. Captures order IDs from both platforms
 
 mod process_mock_tests {
-    use arb_bot::types::*;
-    use arb_bot::circuit_breaker::*;
-    use arb_bot::position_tracker::*;
+    use prediction_market_arbitrage::types::*;
+    use prediction_market_arbitrage::circuit_breaker::*;
+    use prediction_market_arbitrage::position_tracker::*;
     use std::sync::Arc;
     use tokio::sync::RwLock;
 
@@ -1889,7 +1889,7 @@ mod process_mock_tests {
         // Double fee: kalshi_fee(44) + kalshi_fee(44)
         // kalshi_fee(44) = ceil(7 * 44 * 56 / 10000) = ceil(1.7248) = 2¢
         // Total fees = 2 + 2 = 4¢
-        let expected_fees = arb_bot::types::kalshi_fee_cents(44) + arb_bot::types::kalshi_fee_cents(44);
+        let expected_fees = prediction_market_arbitrage::types::kalshi_fee_cents(44) + prediction_market_arbitrage::types::kalshi_fee_cents(44);
         assert_eq!(req.estimated_fee_cents(), expected_fees, "KalshiOnly should have double fees");
 
         // Profit = 100 - 44 - 44 - 4 = 8¢
@@ -1920,7 +1920,7 @@ mod process_mock_tests {
     /// Test: KalshiOnly fee calculation is double (fee on both YES and NO sides)
     #[test]
     fn test_kalshi_only_double_fees() {
-        use arb_bot::types::kalshi_fee_cents;
+        use prediction_market_arbitrage::types::kalshi_fee_cents;
 
         for yes_price in [10u16, 25, 50, 75, 90] {
             for no_price in [10u16, 25, 50, 75, 90] {
@@ -1944,7 +1944,7 @@ mod process_mock_tests {
     /// Test: Cross-platform fee calculation (fee only on Kalshi side)
     #[test]
     fn test_cross_platform_single_fee() {
-        use arb_bot::types::kalshi_fee_cents;
+        use prediction_market_arbitrage::types::kalshi_fee_cents;
 
         // PolyYesKalshiNo: fee on Kalshi NO side
         let req1 = FastExecutionRequest {
@@ -1976,7 +1976,7 @@ mod process_mock_tests {
     /// Test: Profit comparison across all arb types with same prices
     #[test]
     fn test_profit_comparison_all_arb_types() {
-        use arb_bot::types::kalshi_fee_cents;
+        use prediction_market_arbitrage::types::kalshi_fee_cents;
 
         let yes_price = 45u16;
         let no_price = 45u16;
